@@ -364,26 +364,21 @@ const LoanCalculator = () => {
           break;
         }
 
-        // Move to next month
-        const year = currentDate.getFullYear();
-        const monthNum = currentDate.getMonth();
-        const originalDay = new Date(startDate).getDate(); // Use original start date day
+        // Move to next month - preserve the original day of month
+        const originalStartDate = new Date(startDate);
+        const originalDay = originalStartDate.getDate();
         
-        // Move to the same day next month, handling month-end edge cases properly
-        let nextYear = year;
-        let nextMonthNum = monthNum + 1;
+        // Add one month to current date
+        const nextMonth = new Date(currentDate);
+        nextMonth.setMonth(nextMonth.getMonth() + 1);
         
-        // Handle year rollover
-        if (nextMonthNum > 11) {
-          nextYear = year + 1;
-          nextMonthNum = 0;
-        }
+        // Set to the original day, handling month-end cases
+        const targetYear = nextMonth.getFullYear();
+        const targetMonth = nextMonth.getMonth();
+        const daysInTargetMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
+        const targetDay = Math.min(originalDay, daysInTargetMonth);
         
-        // Try to create date with same day in next month
-        const daysInNextMonth = new Date(nextYear, nextMonthNum + 1, 0).getDate();
-        const targetDay = Math.min(originalDay, daysInNextMonth);
-        
-        currentDate = new Date(nextYear, nextMonthNum, targetDay);
+        currentDate = new Date(targetYear, targetMonth, targetDay);
         
         month++;
       }
