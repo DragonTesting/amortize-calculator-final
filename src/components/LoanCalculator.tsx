@@ -367,7 +367,7 @@ const LoanCalculator = () => {
         // Move to next month
         const year = currentDate.getFullYear();
         const monthNum = currentDate.getMonth();
-        const day = currentDate.getDate();
+        const originalDay = new Date(startDate).getDate(); // Use original start date day
         
         // Move to the same day next month, handling month-end edge cases properly
         let nextYear = year;
@@ -381,7 +381,7 @@ const LoanCalculator = () => {
         
         // Try to create date with same day in next month
         const daysInNextMonth = new Date(nextYear, nextMonthNum + 1, 0).getDate();
-        const targetDay = Math.min(day, daysInNextMonth);
+        const targetDay = Math.min(originalDay, daysInNextMonth);
         
         currentDate = new Date(nextYear, nextMonthNum, targetDay);
         
